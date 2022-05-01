@@ -1,0 +1,18 @@
+#!/bin/sh
+
+output=$(amixer get Master | awk -F'[][]' 'NR == 5 {print $2 " " $6}')
+stat=${output##* }
+
+[ "$stat" = "off" ] && echo $'\U1F507' && exit
+ 
+vol=$(echo ${output% *} | tr -d %)
+
+if [ "$vol" -gt "70" ]; then
+	icon=$'\U1F50A' 
+elif [ "$vol" -gt "30" ]; then
+	icon=$'\U1F509' 
+else
+	icon=$'\U1F508' 
+fi
+
+echo "$icon$vol%" 

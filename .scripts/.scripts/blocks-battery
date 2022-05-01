@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Retrieve the battery percentage
+battery="$(cat /sys/class/power_supply/BAT0/capacity)"
+
+case $(cat /sys/class/power_supply/BAT0/status) in
+	"Full") status=$'\U26A1' ;; # Lightning bolt emoji
+	"Discharging") status=$'\U1F50B' ;; # Battery emoji
+	"Charging") status=$'\U1F50C' ;;  # Electric plug emoji
+	"Not charging") status=$'\U1F50B' ;; # Battery emoji
+	"Unknown") status=$'\U267B';; # Recycling symbol emoji
+	*) exit 1 ;;
+esac
+
+# If the battery is less than 10 percent and not charging, display an exclamation point
+# next to the battery percentage
+[ "$status" = $'\U1F50B'  -a "$battery" -lt "10" ] && echo $'\U2757'$battery% && exit
+
+# Display the status icon along with the battery percentage
+echo "$status$battery%"

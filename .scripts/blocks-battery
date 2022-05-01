@@ -1,0 +1,17 @@
+#!/bin/sh
+
+battery="$(cat /sys/class/power_supply/BAT0/capacity)"
+
+case $(cat /sys/class/power_supply/BAT0/status) in
+	"Full") status=$'\U26A1' ;;
+	"Discharging") status=$'\U1F50B' ;;
+	"Charging") status=$'\U1F50C' ;;
+	"Not charging") status=$'\U1F50B' ;;
+	"Unknown") status=$'\U267B';;
+	*) exit 1 ;;
+esac
+
+[ "$status" = $'\U1F50B'  -a "$battery" -lt "10" ] && echo $'\U2757'$battery% && exit
+
+echo "$status$battery%"
+
