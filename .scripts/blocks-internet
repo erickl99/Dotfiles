@@ -2,4 +2,5 @@
 
 wifi="$(cat /sys/class/net/wlp3s0/operstate)"
 
-[ $wifi == "up" ] && echo $'\U1F4F6' || echo $'\U1F4E1'
+# If wifi is up, display "Antenna Bars". Otherwise display "Satellite Antenna"
+[ "$wifi" = "up" ] && env printf '\U0001F4F6' || env printf '\U0001F6F0'

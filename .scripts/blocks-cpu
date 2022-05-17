@@ -2,4 +2,5 @@
 
 temp=$(sensors | awk '/Core 0/ {print $3}')
 
-echo $'\U1F321'$temp
+env printf '\U0001F321'
+echo "$temp"

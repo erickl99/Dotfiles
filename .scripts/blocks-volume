@@ -1,18 +1,22 @@
 #!/bin/sh
 
+# Get the current volume and its status (i.e. muted or not) from amixer
 output=$(amixer get Master | awk -F'[][]' 'NR == 5 {print $2 " " $6}')
+
+# Get the second word in $output
 stat=${output##* }
 
-[ "$stat" = "off" ] && echo $'\U1F507' && exit
- 
-vol=$(echo ${output% *} | tr -d %)
+# If the volume is muted, display "Muted Speaker"
+[ "$stat" = "off" ] && env printf '\U0001F507' && exit
+
+vol=$(echo "${output% *}" | tr -d %)
 
 if [ "$vol" -gt "70" ]; then
-	icon=$'\U1F50A' 
+	icon=$(env printf '\U0001F50A')
 elif [ "$vol" -gt "30" ]; then
-	icon=$'\U1F509' 
+	icon=$(env printf '\U0001F509')
 else
-	icon=$'\U1F508' 
+	icon=$(env printf '\U0001F508')
 fi
 
 echo "$icon$vol%" 
